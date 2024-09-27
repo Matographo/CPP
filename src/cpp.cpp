@@ -107,11 +107,11 @@ int Cpp::install(std::vector<std::string> packages) {
 }
 
 int Cpp::uninstall(std::string package) {
+    std::string homePath = std::getenv("HOME");
     std::string packageName;
     std::string version;
     bool isHash = false;
 
-    std::string pathToPackage = "/home/leodora/.nxpm/packages/cpp/" + packageName;
 
     if(package.find("@") != std::string::npos) {
         packageName = package.substr(0, package.find("@"));
@@ -121,10 +121,11 @@ int Cpp::uninstall(std::string package) {
         version = package.substr(package.find("#") + 1);
         isHash = true;
     } else {
-        std::filesystem::remove_all(pathToPackage);
+        std::filesystem::remove_all(homePath + "/.nxpm/packages/cpp/" + package);
         std::cout << "Package " << packageName << " uninstalled" << std::endl;
         return 0;
     }
+    std::string pathToPackage = homePath + "/.nxpm/packages/cpp/" + packageName;
     std::string pathToPackageVersion = pathToPackage + "/" + version;
 
     std::filesystem::remove_all(pathToPackageVersion);
