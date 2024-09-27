@@ -12,7 +12,7 @@ Cpp::Cpp() {
     path += "/cpp.db";
     if(!std::filesystem::exists(path)) {
         Downloader downloader;
-        downloader.downloadGit("Matographo/cpp-database", path);
+        downloader.downloadGit("Matographo/cpp-database", pathToDatabase);
     }
     
     std::string pathToPackage = "/home/leodora/.nxpm/packages/cpp";
