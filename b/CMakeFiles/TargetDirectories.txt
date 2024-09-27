@@ -1,3 +1,0 @@
-/home/leodora/Documents/Dev/Nexis/NXPM PM/CPP/b/CMakeFiles/cpp.dir
-/home/leodora/Documents/Dev/Nexis/NXPM PM/CPP/b/CMakeFiles/edit_cache.dir
-/home/leodora/Documents/Dev/Nexis/NXPM PM/CPP/b/CMakeFiles/rebuild_cache.dir

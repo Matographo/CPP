@@ -1,1 +1,0 @@
-/usr/bin/c++ -fPIC -shared -Wl,-soname,libcpp.so -o libcpp.so CMakeFiles/cpp.dir/src/cpp.cpp.o CMakeFiles/cpp.dir/src/Downloader.cpp.o CMakeFiles/cpp.dir/src/sqlite3.c.o  -ldl 
