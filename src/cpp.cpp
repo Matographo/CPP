@@ -3,15 +3,16 @@
 Cpp::Cpp() {
     sqlite3 *db;
     
-    std::string path = "/home/leodora/.nxpm/databases";
+    std::string homePath = std::getenv("HOME");
+    std::string pathToDatabase = homePath + ".nxpm/databases";
+    std::string path = pathToDatabase + "/cpp";
     if(!std::filesystem::exists(path)) {
         std::filesystem::create_directories(path);
     }
     path += "/cpp.db";
     if(!std::filesystem::exists(path)) {
-        sqlite3_open(path.c_str(), &db);
-        sqlite3_exec(db, "CREATE TABLE packages (name TEXT, repo TEXT", NULL, NULL, NULL);
-        sqlite3_close(db);
+        Downloader downloader;
+        downloader.downloadGit("Matographo/cpp-database", path);
     }
     
     std::string pathToPackage = "/home/leodora/.nxpm/packages/cpp";
