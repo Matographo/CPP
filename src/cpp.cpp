@@ -4,7 +4,7 @@ Cpp::Cpp() {
     sqlite3 *db;
     
     std::string homePath = std::getenv("HOME");
-    std::string pathToDatabase = homePath + ".nxpm/databases";
+    std::string pathToDatabase = homePath + "/.nxpm/databases";
     std::string path = pathToDatabase + "/cpp";
     if(!std::filesystem::exists(path)) {
         std::filesystem::create_directories(path);
