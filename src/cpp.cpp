@@ -14,7 +14,6 @@ Cpp::Cpp() {
         Downloader downloader;
         downloader.downloadGit("Matographo/cpp-database", pathToDatabase);
     }
-    std::string homePath = std::getenv("HOME");
     std::string pathToPackage = homePath + "/.nxpm/packages/cpp";
     if(!std::filesystem::exists(pathToPackage)) {
         std::filesystem::create_directories(pathToPackage);
