@@ -14,8 +14,8 @@ Cpp::Cpp() {
         Downloader downloader;
         downloader.downloadGit("Matographo/cpp-database", pathToDatabase);
     }
-    
-    std::string pathToPackage = "/home/leodora/.nxpm/packages/cpp";
+    std::string homePath = std::getenv("HOME");
+    std::string pathToPackage = homePath + "/.nxpm/packages/cpp";
     if(!std::filesystem::exists(pathToPackage)) {
         std::filesystem::create_directories(pathToPackage);
     }
@@ -44,7 +44,8 @@ int Cpp::install(std::string package) {
         std::cerr << "No version specified for package " << package << std::endl;
         return 1;
     }
-    std::string pathToPackage = "/home/leodora/.nxpm/packages/cpp/" + packageName;
+    std::string homePath = std::getenv("HOME");
+    std::string pathToPackage = homePath + "/.nxpm/packages/cpp/" + packageName;
     std::string pathToPackageVersion = pathToPackage + "/" + version;
 
     if(std::filesystem::exists(pathToPackageVersion + "/include") && std::filesystem::exists(pathToPackageVersion + "/cpp")
@@ -155,7 +156,8 @@ int Cpp::uninstall(std::vector<std::string> packages) {
 }
 
 int Cpp::update(std::string package) {
-    std::string pathToPackage = "/home/leodora/.nxpm/packages/cpp/" + package;
+    std::string homePath = std::getenv("HOME");
+    std::string pathToPackage = homePath + "/.nxpm/packages/cpp/" + package;
     if(!std::filesystem::exists(pathToPackage + "/.raw")) {
         std::cerr << "No package found with name " << package << std::endl;
         return 1;
@@ -179,10 +181,11 @@ int Cpp::update(std::vector<std::string> packages) {
 }
 
 int Cpp::update() {
-    std::string pathToPackage = "/home/leodora/.nxpm/packages/cpp";
+    std::string homePath = std::getenv("HOME");
+    std::string pathToPackage = homePath + "/.nxpm/packages/cpp";
     std::vector<std::string> packages;
     for(const auto & entry : std::filesystem::directory_iterator(pathToPackage)) {
-        packages.push_back(entry.path().filename());
+        packages.push_back(entry.path().stem());
     }
     return this->update(packages);
 }
@@ -218,7 +221,8 @@ int Cpp::search(std::string package) {
 }
 
 int Cpp::list() {
-    std::string pathToPackages = "/home/leodora/.nxpm/packages/cpp";
+    std::string homePath = std::getenv("HOME");
+    std::string pathToPackages = homePath + "/.nxpm/packages/cpp";
     
     for(const auto & entry : std::filesystem::directory_iterator(pathToPackages)) {
         std::cout << entry.path().filename() << std::endl;
@@ -250,8 +254,8 @@ int Cpp::info(std::string package) {
         std::cerr << "No package found with name " << package << std::endl;
         return 1;
     }
-    
-    std::string pathToPackage = "/home/leodora/.nxpm/packages/cpp/" + package;
+    std::string homePath = std::getenv("HOME");
+    std::string pathToPackage = homePath + "/.nxpm/packages/cpp/" + package;
     
     if(!std::filesystem::exists(pathToPackage)) {
         std::cerr << "No package " << package << " is installed" << std::endl;
@@ -279,6 +283,8 @@ int Cpp::info(std::string package) {
         output << readme.rdbuf();
         readme.close();
     }
+    
+    std::cout << output.str();
     
     return 0;
 }
