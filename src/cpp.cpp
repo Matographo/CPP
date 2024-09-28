@@ -353,7 +353,7 @@ int Cpp::createNewVersion(std::string version, bool isHash, std::string packageN
         return 1;
     }
     
-    std::filesystem::copy(libraryFile, pathToPackageVersion + "/cpp");
+    std::filesystem::copy(libraryFile, pathToPackageVersion + "/cpp/" + packageName + libraryExtention);
     
     std::filesystem::remove_all(pathToBuild);
     return 0;
