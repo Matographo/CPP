@@ -111,8 +111,6 @@ int Cpp::uninstall(std::string package) {
     std::string homePath = std::getenv("HOME");
     std::string packageName;
     std::string version;
-    bool isHash = false;
-
 
     if(package.find("@") != std::string::npos) {
         packageName = package.substr(0, package.find("@"));
@@ -120,7 +118,6 @@ int Cpp::uninstall(std::string package) {
     } else if(package.find("#") != std::string::npos) {
         packageName = package.substr(0, package.find("#"));
         version = package.substr(package.find("#") + 1);
-        isHash = true;
     } else {
         std::filesystem::remove_all(homePath + "/.nxpm/packages/cpp/" + package);
         std::cout << "Package " << packageName << " uninstalled" << std::endl;
@@ -130,6 +127,7 @@ int Cpp::uninstall(std::string package) {
     std::string pathToPackageVersion = pathToPackage + "/" + version;
 
     std::filesystem::remove_all(pathToPackageVersion);
+    std::cout << "Package " << pathToPackageVersion << " path" << std::endl;
     
     bool found = false;
     for(const auto & entry : std::filesystem::directory_iterator(pathToPackage)) {
