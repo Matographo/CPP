@@ -1,20 +1,20 @@
-#ifndef CPP_H
-#define CPP_H
+#ifndef CPPP_H
+#define CPPP_H
 
-#include <iostream>
-#include <fstream>
-#include <string>
 #include <filesystem>
+#include <iostream>
+#include <Downloader.h>
 #include "PackageManager.h"
-#include "sqlite3.h"
-#include "Downloader.h"
 
 class Cpp : public PackageManager {
 private:
-    sqlite3 *db;
-    sqlite3_stmt *stmt;
+    PackageManagerToolkit * toolkit;
+    const std::string progLang = "cpp";
+    const std::string gitRepo = "Matographo/cpp-database";
+    
 
-    int createNewVersion(std::string version, bool isHash, std::string packageName, std::string pathToPackage, std::string pathToPackageVersion);
+    int createNewVersion(Package * pkg, PackagePaths * pkgPath);
+
 public:
     Cpp();
     virtual ~Cpp();
@@ -29,6 +29,7 @@ public:
     virtual int search(std::string package) override;
     virtual int list() override;
     virtual int info(std::string package) override;
+    virtual void setToolkit(PackageManagerToolkit * toolkit) override;
 };
 
 #endif

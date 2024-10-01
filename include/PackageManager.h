@@ -3,6 +3,7 @@
 
 #include <string>
 #include <vector>
+#include <PackageManagerToolkit.h>
 
 /**
  * Interface for package managers
@@ -80,6 +81,13 @@ public:
      * @return 0 if successful, 1 if not
      */
     virtual int info(std::string package) = 0;
+    
+    /**
+     * Set the toolkit for the package manager for common tasks
+     * and to write faster plugins and save space
+     * @param toolkit The toolkit to set
+     */
+    virtual void setToolkit(PackageManagerToolkit * toolkit) = 0;
 };
 
 #endif
