@@ -94,6 +94,7 @@ int Cpp::info(std::string package) {
 
 void Cpp::setToolkit(PackageManagerToolkit * toolkit) {
     this->toolkit = toolkit;
+    this->toolkit->installOwnDatabase(this->progLang, this->gitRepo);
 }
 
 int Cpp::createNewVersion(Package * pkg, PackagePaths * pkgPath) {
@@ -166,6 +167,7 @@ int Cpp::createNewVersion(Package * pkg, PackagePaths * pkgPath) {
     
     return 0;
 }
+
 
 extern "C" PackageManager * create() {
     return new Cpp();
