@@ -3,7 +3,8 @@
 
 #include <filesystem>
 #include <iostream>
-#include <Downloader.h>
+#include "Downloader.h"
+#include "sqlite3.h"
 #include "PackageManager.h"
 
 class Cpp : public PackageManager {
@@ -14,6 +15,7 @@ private:
     
 
     int createNewVersion(Package * pkg, PackagePaths * pkgPath);
+    void installDatabase();
 
 public:
     Cpp();

@@ -94,7 +94,7 @@ int Cpp::info(std::string package) {
 
 void Cpp::setToolkit(PackageManagerToolkit * toolkit) {
     this->toolkit = toolkit;
-    this->toolkit->installOwnDatabase(this->progLang, this->gitRepo);
+    this->installDatabase();
 }
 
 int Cpp::createNewVersion(Package * pkg, PackagePaths * pkgPath) {
@@ -166,6 +166,15 @@ int Cpp::createNewVersion(Package * pkg, PackagePaths * pkgPath) {
     std::filesystem::remove_all(pathToBuild);
     
     return 0;
+}
+
+void Cpp::installDatabase() {
+    std::string homePath = std::getenv("HOME");
+    std::string databasePath = homePath + "/.nxpm/databases/" + this->progLang + "/" + this->progLang + ".db";
+    
+    if(std::filesystem::exists(databasePath)) {
+        this->toolkit->installOwnDatabase(this->progLang, databasePath);
+    }
 }
 
 
