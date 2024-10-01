@@ -9,6 +9,7 @@ Cpp::~Cpp() {
 int Cpp::install(std::string package) {
     Package pkg = this->toolkit->parsePackage(package);
     PackagePaths pkgPath = this->toolkit->getPackagePaths(this->progLang, pkg.name, pkg.version);
+    this->toolkit->installOwnDatabase(this->progLang, this->gitRepo);
     
     if(std::filesystem::exists(pkgPath.packageVersionPath + "/include") && std::filesystem::exists(pkgPath.packageVersionPath + "/cpp")
         && std::filesystem::is_directory(pkgPath.packageVersionPath + "/include") && std::filesystem::is_directory(pkgPath.packageVersionPath + "/cpp")) {
@@ -55,11 +56,7 @@ int Cpp::uninstall(std::string package) {
 }
 
 int Cpp::uninstall(std::vector<std::string> packages) {
-    int result = 0;
-    for(std::string package : packages) {
-        result += this->uninstall(package);
-    }
-    return result;
+    return this->toolkit->uinistallAllPackages(this->progLang);
 }
 
 int Cpp::update(std::string package) {
@@ -69,11 +66,7 @@ int Cpp::update(std::string package) {
 }
 
 int Cpp::update(std::vector<std::string> packages) {
-    int result = 0;
-    for(std::string package : packages) {
-        result += this->update(package);
-    }
-    return result;
+    return this->toolkit->updateAllPackages(this->progLang);
 }
 
 int Cpp::update() {
@@ -81,6 +74,8 @@ int Cpp::update() {
 }
 
 int Cpp::search(std::string package) {
+    this->toolkit->getPackagePaths(this->progLang, package, "");
+    this->toolkit->installOwnDatabase(this->progLang, this->gitRepo);
     return this->toolkit->searchPackageDatabase(this->progLang, package);
 }
 
@@ -94,7 +89,6 @@ int Cpp::info(std::string package) {
 
 void Cpp::setToolkit(PackageManagerToolkit * toolkit) {
     this->toolkit = toolkit;
-    this->installDatabase();
 }
 
 int Cpp::createNewVersion(Package * pkg, PackagePaths * pkgPath) {
@@ -166,15 +160,6 @@ int Cpp::createNewVersion(Package * pkg, PackagePaths * pkgPath) {
     std::filesystem::remove_all(pathToBuild);
     
     return 0;
-}
-
-void Cpp::installDatabase() {
-    std::string homePath = std::getenv("HOME");
-    std::string databasePath = homePath + "/.nxpm/databases/" + this->progLang + "/" + this->progLang + ".db";
-    
-    if(std::filesystem::exists(databasePath)) {
-        this->toolkit->installOwnDatabase(this->progLang, databasePath);
-    }
 }
 
 

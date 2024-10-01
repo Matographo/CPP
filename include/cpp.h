@@ -15,7 +15,6 @@ private:
     
 
     int createNewVersion(Package * pkg, PackagePaths * pkgPath);
-    void installDatabase();
 
 public:
     Cpp();
