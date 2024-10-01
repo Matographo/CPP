@@ -166,3 +166,11 @@ int Cpp::createNewVersion(Package * pkg, PackagePaths * pkgPath) {
     
     return 0;
 }
+
+extern "C" PackageManager * create() {
+    return new Cpp();
+}
+
+extern "C" void destroy(PackageManager * pm) {
+    delete pm;
+}
