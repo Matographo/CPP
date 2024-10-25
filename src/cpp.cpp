@@ -132,10 +132,11 @@ int Cpp::createNewVersion(Package * pkg, PackagePaths * pkgPath) {
             return 1;
         }
 
-        makeBuild = "make -C " + pathToBuild;
     } else {
-        makeBuild = "make -C " + pkgPath->packageRawPath;
+        pathToBuild = pkgPath->packageRawPath;
     }
+    
+    makeBuild = "make -C " + pathToBuild;
     
     if(system(makeBuild.c_str()) != 0) {
         std::cerr << "Failed to build package " << pkg->name << std::endl;
