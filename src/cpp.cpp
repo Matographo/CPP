@@ -119,16 +119,23 @@ int Cpp::createNewVersion(Package * pkg, PackagePaths * pkgPath) {
         }
     }
     
-    std::string cmakeBuild = "cmake -S " + pkgPath->packageRawPath + " -B " + pathToBuild;
+    std::string makeBuild;
+    
+    if(std::filesystem::exists(pkgPath->packageBasePath + "/CMakeLists.text")) {
+        
+        std::string cmakeBuild = "cmake -S " + pkgPath->packageRawPath + " -B " + pathToBuild;
 
-    if(system(cmakeBuild.c_str()) != 0) {
-        std::cerr << "Failed to generate build files for package " << pkg->name << std::endl;
-        std::filesystem::remove_all(pkgPath->packageVersionPath);
-        std::filesystem::remove_all(pkgPath->packageBasePath + "/build");
-        return 1;
+        if(system(cmakeBuild.c_str()) != 0) {
+            std::cerr << "Failed to generate build files for package " << pkg->name << std::endl;
+            std::filesystem::remove_all(pkgPath->packageVersionPath);
+            std::filesystem::remove_all(pkgPath->packageBasePath + "/build");
+            return 1;
+        }
+
+        makeBuild = "make -C " + pathToBuild;
+    } else {
+        makeBuild = "make -C " + pkgPath->packageRawPath;
     }
-
-    std::string makeBuild = "make -C " + pathToBuild;
     
     if(system(makeBuild.c_str()) != 0) {
         std::cerr << "Failed to build package " << pkg->name << std::endl;
@@ -137,12 +144,13 @@ int Cpp::createNewVersion(Package * pkg, PackagePaths * pkgPath) {
         return 1;
     }
     
+    
     std::string libraryFile;
     std::string libraryExtention;
 
     for(const auto & entry : std::filesystem::directory_iterator(pathToBuild)) {
         libraryExtention = entry.path().extension();
-        if(libraryExtention == ".a" || libraryExtention == ".so" || libraryExtention == ".dll" || libraryExtention == ".lib") {
+        if(libraryExtention == ".a" || libraryExtention == ".so" || libraryExtention == ".dll" || libraryExtention == ".lib" || libraryExtention == ".dylib") {
             libraryFile = entry.path();
             break;
         }
@@ -152,13 +160,14 @@ int Cpp::createNewVersion(Package * pkg, PackagePaths * pkgPath) {
         std::cerr << "No library file found for package " << pkg->name << std::endl;
         std::filesystem::remove_all(pkgPath->packageVersionPath);
         std::filesystem::remove_all(pathToBuild);
+        system(("git -C " + pkgPath->packageRawPath + " restore .").c_str());
         return 1;
     }
 
     std::filesystem::copy(libraryFile, pkgPath->packageVersionPath + "/cpp/" + pkg->name + libraryExtention);
     
     std::filesystem::remove_all(pathToBuild);
-    
+    system(("git -C " + pkgPath->packageRawPath + " restore .").c_str());
     return 0;
 }
 
