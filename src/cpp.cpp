@@ -121,7 +121,7 @@ int Cpp::createNewVersion(Package * pkg, PackagePaths * pkgPath) {
     
     std::string makeBuild;
     
-    if(std::filesystem::exists(pkgPath->packageBasePath + "/CMakeLists.text")) {
+    if(std::filesystem::exists(pkgPath->packageBasePath + "/CMakeLists.txt")) {
         
         std::string cmakeBuild = "cmake -S " + pkgPath->packageRawPath + " -B " + pathToBuild;
 
